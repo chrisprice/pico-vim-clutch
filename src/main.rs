@@ -4,7 +4,7 @@
 use cortex_m::delay::Delay;
 use defmt::*;
 use defmt_rtt as _;
-use embedded_hal::digital::v2::OutputPin;
+use embedded_hal::digital::v2::{InputPin, OutputPin};
 use panic_probe as _;
 use rp_pico::{entry, Pins, XOSC_CRYSTAL_FREQ};
 
@@ -45,13 +45,17 @@ fn main() -> ! {
     );
 
     let mut led_pin = pins.led.into_push_pull_output();
+    let switch_pin = pins.gpio0.into_pull_up_input();
 
     loop {
-        info!("on!");
-        led_pin.set_high().unwrap();
-        delay.delay_ms(500);
-        info!("off!");
-        led_pin.set_low().unwrap();
-        delay.delay_ms(500);
+        delay.delay_ms(1);
+        let switch_state = switch_pin.is_low().unwrap();
+        if switch_state {
+            info!("on!");
+            led_pin.set_high().unwrap();
+        } else {
+            info!("off!");
+            led_pin.set_low().unwrap();
+        }
     }
 }
