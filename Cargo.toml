@@ -22,6 +22,9 @@ rp-pico = "0.5"
 # rp2040-hal = { version="0.6", features=["rt"] }
 # rp2040-boot2 = "0.2"
 
+usb-device= "0.2.9"
+usbd-hid = "0.5.1"
+
 # cargo build/run
 [profile.dev]
 codegen-units = 1
